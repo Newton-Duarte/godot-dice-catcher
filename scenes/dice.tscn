@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_27nyo"]
 radius = 37.0
 
-[node name="Dice" type="Area2D" unique_id=2017388529]
+[node name="Dice" type="Area2D" unique_id=2017388529 groups=["stoppable"]]
 script = ExtResource("1_mg5ex")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1543258246]
