@@ -15,4 +15,9 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	sprite_2d.rotate((ROTATION_SPEED * rotate_direction) * delta)
-	global_position.y += SPEED * delta
+	position.y += SPEED * delta
+	check_game_over()
+
+func check_game_over() -> void:
+	if get_viewport_rect().end.y < position.y:
+		queue_free()
