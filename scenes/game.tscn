@@ -12,3 +12,9 @@ texture = ExtResource("1_uwrxv")
 
 [node name="Dice" parent="." unique_id=2017388529 instance=ExtResource("2_yqjtg")]
 position = Vector2(543, 28)
+
+[node name="Dice2" parent="." unique_id=32612328 instance=ExtResource("2_yqjtg")]
+position = Vector2(983, 158)
+
+[node name="Dice3" parent="." unique_id=2088959729 instance=ExtResource("2_yqjtg")]
+position = Vector2(266, 214)
