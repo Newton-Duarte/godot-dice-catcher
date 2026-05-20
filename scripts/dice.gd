@@ -8,7 +8,7 @@ const SPEED: float = 150.0
 const ROTATION_SPEED: float = 5.0
 
 var rotate_directions: Array[float] = [-1.0, 1.0]
-var rotate_direction: int = 1.0
+var rotate_direction: float = 1.0
 
 func _ready() -> void:
 	rotate_direction = rotate_directions.pick_random()
