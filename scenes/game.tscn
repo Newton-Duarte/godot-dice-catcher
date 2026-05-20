@@ -18,7 +18,7 @@ shadow_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
 script = ExtResource("1_lnu2h")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=2114178832]
-position = Vector2(583, 342.00003)
+position = Vector2(397.99997, 313)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("1_uwrxv")
 
