@@ -21,3 +21,4 @@ z_index = 1
 position = Vector2(570, 589)
 
 [connection signal="timeout" from="SpawnTimer" to="." method="spawn_dice"]
+[connection signal="point_scored" from="Fox" to="." method="_on_fox_point_scored"]
