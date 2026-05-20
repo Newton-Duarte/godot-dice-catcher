@@ -4,11 +4,11 @@ extends Area2D
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
-const SPEED = 150
-const ROTATION_SPEED = 4
+const SPEED: float = 150.0
+const ROTATION_SPEED: float = 5.0
 
-var rotate_directions: Array[int] = [-1, 1]
-var rotate_direction: int = 1
+var rotate_directions: Array[float] = [-1.0, 1.0]
+var rotate_direction: int = 1.0
 
 func _ready() -> void:
 	rotate_direction = rotate_directions.pick_random()
