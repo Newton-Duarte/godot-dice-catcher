@@ -1,20 +1,18 @@
 [gd_scene format=3 uid="uid://xlj61jrmvlld"]
 
+[ext_resource type="Script" uid="uid://b5jaaso2rkvwg" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://hjt2a50it2vy" path="res://assets/GemBg.png" id="1_uwrxv"]
-[ext_resource type="PackedScene" uid="uid://b402sficj377r" path="res://scenes/dice.tscn" id="2_yqjtg"]
 
 [node name="Game" type="Node2D" unique_id=1282783814]
+script = ExtResource("1_lnu2h")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2114178832]
 position = Vector2(583, 342.00003)
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("1_uwrxv")
 
-[node name="Dice" parent="." unique_id=2017388529 instance=ExtResource("2_yqjtg")]
-position = Vector2(543, 28)
+[node name="SpawnTimer" type="Timer" parent="." unique_id=562564451]
+wait_time = 2.0
+autostart = true
 
-[node name="Dice2" parent="." unique_id=32612328 instance=ExtResource("2_yqjtg")]
-position = Vector2(983, 158)
-
-[node name="Dice3" parent="." unique_id=2088959729 instance=ExtResource("2_yqjtg")]
-position = Vector2(266, 214)
+[connection signal="timeout" from="SpawnTimer" to="." method="spawn_dice"]
