@@ -1,17 +1,23 @@
 extends Node2D
 
 const DICE = preload("res://scenes/dice.tscn")
+const GAME_OVER = preload("uid://eii2vgkwahql")
 
 const STOPPABLE_GROUP: String = "stoppable"
 const MARGIN: float = 80.0
 
 @onready var spawn_timer: Timer = $SpawnTimer
+@onready var score_label: Label = $ScoreLabel
+@onready var music: AudioStreamPlayer = $Music
+
+var _points: int = 0
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("restart"):
 		get_tree().reload_current_scene()
 
 func _ready() -> void:
+	update_score_label()
 	spawn_dice()
 
 func spawn_dice() -> void:
@@ -31,8 +37,15 @@ func pause_all() -> void:
 	for item in to_stop:
 		item.set_physics_process(false)
 
+func update_score_label() -> void:
+	score_label.text = "%04d" % _points
+
 func _on_dice_game_over() -> void:
 	pause_all()
+	music.stop()
+	music.stream = GAME_OVER
+	music.play()
 
 func _on_fox_point_scored() -> void:
-	print("Point scored: Game")
+	_points += 1
+	update_score_label()

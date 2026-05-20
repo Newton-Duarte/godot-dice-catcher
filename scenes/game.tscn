@@ -3,6 +3,16 @@
 [ext_resource type="Script" uid="uid://b5jaaso2rkvwg" path="res://scripts/game.gd" id="1_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://hjt2a50it2vy" path="res://assets/GemBg.png" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://b7eevs85qu14u" path="res://scenes/fox.tscn" id="3_lnu2h"]
+[ext_resource type="FontFile" uid="uid://bsflx7ihsm167" path="res://assets/LuckiestGuy-Regular.ttf" id="4_lbhrr"]
+[ext_resource type="AudioStream" uid="uid://cwpkcmoeuh3ie" path="res://assets/tetris.mp3" id="5_iywne"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_iywne"]
+font = ExtResource("4_lbhrr")
+font_size = 40
+outline_size = 4
+outline_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
+shadow_size = 4
+shadow_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
 
 [node name="Game" type="Node2D" unique_id=1282783814]
 script = ExtResource("1_lnu2h")
@@ -19,6 +29,22 @@ autostart = true
 [node name="Fox" parent="." unique_id=2130799101 instance=ExtResource("3_lnu2h")]
 z_index = 1
 position = Vector2(570, 589)
+
+[node name="ScoreLabel" type="Label" parent="." unique_id=2073859644]
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 133.0
+offset_bottom = 73.0
+text = "Score"
+label_settings = SubResource("LabelSettings_iywne")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=791203665]
+stream = ExtResource("5_iywne")
+volume_db = -10.0
+autoplay = true
+parameters/looping = false
 
 [connection signal="timeout" from="SpawnTimer" to="." method="spawn_dice"]
 [connection signal="point_scored" from="Fox" to="." method="_on_fox_point_scored"]
