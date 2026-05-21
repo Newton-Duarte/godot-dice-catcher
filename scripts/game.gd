@@ -9,6 +9,8 @@ const GAME_OVER = preload("uid://eii2vgkwahql")
 @onready var negative_sound: AudioStreamPlayer2D = $NegativeSound
 @onready var lives_h_box: HBoxContainer = $CanvasLayer/LivesHBox
 @onready var extra_life_sound: AudioStreamPlayer2D = $ExtraLifeSound
+@onready var feedback_label: Label = $CanvasLayer/FeedbackLabel
+@onready var feedback_label_timer: Timer = $FeedbackLabelTimer
 
 const STOPPABLE_GROUP: String = "stoppable"
 const MARGIN: float = 80.0
@@ -24,6 +26,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_tree().reload_current_scene()
 
 func _ready() -> void:
+	feedback_label.hide()
 	update_score_label()
 	spawn_dice()
 
@@ -40,6 +43,7 @@ func spawn_dice() -> void:
 
 func pause_all() -> void:
 	spawn_timer.stop()
+	feedback_label_timer.stop()
 	var to_stop: Array[Node] = get_tree().get_nodes_in_group(STOPPABLE_GROUP)
 	for item in to_stop:
 		item.set_physics_process(false)
@@ -52,7 +56,13 @@ func update_lives() -> void:
 	for index in life_icons.size():
 		life_icons[index].visible = index < _lives
 
+func show_feedback_label(text: String) -> void:
+	feedback_label.text = text
+	feedback_label.show()
+	feedback_label_timer.start()
+
 func game_over() -> void:
+	show_feedback_label("Game Over")
 	pause_all()
 	music.stop()
 	music.stream = GAME_OVER
@@ -61,6 +71,7 @@ func game_over() -> void:
 func _on_dice_off_screen() -> void:
 	_lives = max(_lives - 1, 0)
 	update_lives()
+	show_feedback_label("Miss")
 	
 	if _lives <= 0:
 		game_over()
@@ -71,8 +82,13 @@ func _on_fox_point_scored() -> void:
 	_points += 1
 	_next_live_bonus_points += 1
 	update_score_label()
+	show_feedback_label("+%s" % 1)
 	if _next_live_bonus_points >= BONUS_LIVE_POINTS_NEEDED:
 		_next_live_bonus_points -= BONUS_LIVE_POINTS_NEEDED
 		_lives = min(_lives + 1, MAX_LIVES)
 		extra_life_sound.play()
+		show_feedback_label("+%s Life" % 1)
 		update_lives()
+
+func _on_feedback_label_timer_timeout() -> void:
+	feedback_label.hide()
