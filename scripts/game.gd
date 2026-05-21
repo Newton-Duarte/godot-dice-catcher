@@ -15,7 +15,7 @@ const GAME_OVER = preload("uid://eii2vgkwahql")
 const STOPPABLE_GROUP: String = "stoppable"
 const MARGIN: float = 80.0
 const MAX_LIVES: int = 3
-const BONUS_LIVE_POINTS_NEEDED: int = 2
+const BONUS_LIVE_POINTS_NEEDED: int = 10
 
 var _points: int = 0
 var _lives: int = 3
