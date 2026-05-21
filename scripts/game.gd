@@ -3,17 +3,21 @@ extends Node2D
 const DICE = preload("res://scenes/dice.tscn")
 const GAME_OVER = preload("uid://eii2vgkwahql")
 
-const STOPPABLE_GROUP: String = "stoppable"
-const MARGIN: float = 80.0
-
 @onready var spawn_timer: Timer = $SpawnTimer
 @onready var score_label: Label = $CanvasLayer/ScoreLabel
 @onready var music: AudioStreamPlayer = $Music
 @onready var negative_sound: AudioStreamPlayer2D = $NegativeSound
 @onready var lives_h_box: HBoxContainer = $CanvasLayer/LivesHBox
+@onready var extra_life_sound: AudioStreamPlayer2D = $ExtraLifeSound
+
+const STOPPABLE_GROUP: String = "stoppable"
+const MARGIN: float = 80.0
+const MAX_LIVES: int = 3
+const BONUS_LIVE_POINTS_NEEDED: int = 2
 
 var _points: int = 0
 var _lives: int = 3
+var _next_live_bonus_points: int = 0
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("restart"):
@@ -65,4 +69,10 @@ func _on_dice_off_screen() -> void:
 
 func _on_fox_point_scored() -> void:
 	_points += 1
+	_next_live_bonus_points += 1
 	update_score_label()
+	if _next_live_bonus_points >= BONUS_LIVE_POINTS_NEEDED:
+		_next_live_bonus_points -= BONUS_LIVE_POINTS_NEEDED
+		_lives = min(_lives + 1, MAX_LIVES)
+		extra_life_sound.play()
+		update_lives()

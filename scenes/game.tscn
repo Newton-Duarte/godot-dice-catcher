@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://b7eevs85qu14u" path="res://scenes/fox.tscn" id="3_lnu2h"]
 [ext_resource type="FontFile" uid="uid://bsflx7ihsm167" path="res://assets/LuckiestGuy-Regular.ttf" id="4_lbhrr"]
 [ext_resource type="AudioStream" uid="uid://cwpkcmoeuh3ie" path="res://assets/tetris.mp3" id="5_iywne"]
+[ext_resource type="AudioStream" uid="uid://dmxh7tbbljx03" path="res://assets/extra_life_sound.wav" id="6_gee14"]
 [ext_resource type="AudioStream" uid="uid://cgym1fqiiysm6" path="res://assets/negative_sound.wav" id="6_p57ef"]
 [ext_resource type="Texture2D" uid="uid://c521h60u1k7mt" path="res://assets/Fox.png" id="7_u5sy4"]
 
@@ -40,6 +41,9 @@ parameters/looping = false
 
 [node name="NegativeSound" type="AudioStreamPlayer2D" parent="." unique_id=687912533]
 stream = ExtResource("6_p57ef")
+
+[node name="ExtraLifeSound" type="AudioStreamPlayer2D" parent="." unique_id=1435767764]
+stream = ExtResource("6_gee14")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=677965281]
 
