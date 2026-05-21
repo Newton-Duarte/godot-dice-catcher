@@ -44,8 +44,9 @@ func update_score_label() -> void:
 	score_label.text = "%04d" % _points
 
 func update_lives() -> void:
-	var lives_labels = lives_h_box.get_children()
-	lives_labels[_lives].hide()
+	var life_icons = lives_h_box.get_children()
+	for index in life_icons.size():
+		life_icons[index].visible = index < _lives
 
 func game_over() -> void:
 	pause_all()
@@ -54,7 +55,7 @@ func game_over() -> void:
 	music.play()
 
 func _on_dice_off_screen() -> void:
-	_lives -= 1
+	_lives = max(_lives - 1, 0)
 	update_lives()
 	
 	if _lives <= 0:
