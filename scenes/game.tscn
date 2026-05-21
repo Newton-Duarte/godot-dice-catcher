@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://b7eevs85qu14u" path="res://scenes/fox.tscn" id="3_lnu2h"]
 [ext_resource type="FontFile" uid="uid://bsflx7ihsm167" path="res://assets/LuckiestGuy-Regular.ttf" id="4_lbhrr"]
 [ext_resource type="AudioStream" uid="uid://cwpkcmoeuh3ie" path="res://assets/tetris.mp3" id="5_iywne"]
+[ext_resource type="AudioStream" uid="uid://cgym1fqiiysm6" path="res://assets/negative_sound.wav" id="6_p57ef"]
+[ext_resource type="Texture2D" uid="uid://c521h60u1k7mt" path="res://assets/Fox.png" id="7_u5sy4"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_iywne"]
 font = ExtResource("4_lbhrr")
@@ -30,21 +32,46 @@ autostart = true
 z_index = 1
 position = Vector2(570, 589)
 
-[node name="ScoreLabel" type="Label" parent="." unique_id=2073859644]
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=791203665]
+stream = ExtResource("5_iywne")
+volume_db = -10.0
+autoplay = true
+parameters/looping = false
+
+[node name="NegativeSound" type="AudioStreamPlayer2D" parent="." unique_id=687912533]
+stream = ExtResource("6_p57ef")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=677965281]
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer" unique_id=2073859644]
 offset_left = 32.0
 offset_top = 32.0
-offset_right = 133.0
+offset_right = 146.0
 offset_bottom = 73.0
 text = "Score"
 label_settings = SubResource("LabelSettings_iywne")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Music" type="AudioStreamPlayer" parent="." unique_id=791203665]
-stream = ExtResource("5_iywne")
-volume_db = -10.0
-autoplay = true
-parameters/looping = false
+[node name="LivesHBox" type="HBoxContainer" parent="CanvasLayer" unique_id=1280971443]
+offset_left = 700.0
+offset_top = 16.0
+offset_right = 1023.0
+offset_bottom = 109.0
+scale = Vector2(0.7, 0.7)
+alignment = 2
+
+[node name="Lives1" type="TextureRect" parent="CanvasLayer/LivesHBox" unique_id=1403345896]
+layout_mode = 2
+texture = ExtResource("7_u5sy4")
+
+[node name="Lives2" type="TextureRect" parent="CanvasLayer/LivesHBox" unique_id=912426121]
+layout_mode = 2
+texture = ExtResource("7_u5sy4")
+
+[node name="Lives3" type="TextureRect" parent="CanvasLayer/LivesHBox" unique_id=232617962]
+layout_mode = 2
+texture = ExtResource("7_u5sy4")
 
 [connection signal="timeout" from="SpawnTimer" to="." method="spawn_dice"]
 [connection signal="point_scored" from="Fox" to="." method="_on_fox_point_scored"]

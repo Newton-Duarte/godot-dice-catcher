@@ -2,7 +2,7 @@ class_name Dice
 
 extends Area2D
 
-signal game_over
+signal off_screen
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
@@ -18,9 +18,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	sprite_2d.rotate((ROTATION_SPEED * rotate_direction) * delta)
 	position.y += SPEED * delta
-	check_game_over()
+	check_off_screen()
 
-func check_game_over() -> void:
+func check_off_screen() -> void:
 	if get_viewport_rect().end.y < position.y:
-		game_over.emit()
+		off_screen.emit()
 		queue_free()

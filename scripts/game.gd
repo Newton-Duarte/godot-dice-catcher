@@ -7,10 +7,13 @@ const STOPPABLE_GROUP: String = "stoppable"
 const MARGIN: float = 80.0
 
 @onready var spawn_timer: Timer = $SpawnTimer
-@onready var score_label: Label = $ScoreLabel
+@onready var score_label: Label = $CanvasLayer/ScoreLabel
 @onready var music: AudioStreamPlayer = $Music
+@onready var negative_sound: AudioStreamPlayer2D = $NegativeSound
+@onready var lives_h_box: HBoxContainer = $CanvasLayer/LivesHBox
 
 var _points: int = 0
+var _lives: int = 3
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("restart"):
@@ -28,7 +31,7 @@ func spawn_dice() -> void:
 		viewport_rect.end.x - MARGIN
 	)
 	new_dice.position = Vector2(new_position_x, -MARGIN)
-	new_dice.game_over.connect(_on_dice_game_over)
+	new_dice.off_screen.connect(_on_dice_off_screen)
 	add_child(new_dice)
 
 func pause_all() -> void:
@@ -40,11 +43,24 @@ func pause_all() -> void:
 func update_score_label() -> void:
 	score_label.text = "%04d" % _points
 
-func _on_dice_game_over() -> void:
+func update_lives() -> void:
+	var lives_labels = lives_h_box.get_children()
+	lives_labels[_lives].hide()
+
+func game_over() -> void:
 	pause_all()
 	music.stop()
 	music.stream = GAME_OVER
 	music.play()
+
+func _on_dice_off_screen() -> void:
+	_lives -= 1
+	update_lives()
+	
+	if _lives <= 0:
+		game_over()
+	else:
+		negative_sound.play()
 
 func _on_fox_point_scored() -> void:
 	_points += 1
