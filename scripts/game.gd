@@ -13,7 +13,7 @@ const GAME_OVER = preload("uid://eii2vgkwahql")
 @onready var feedback_label_timer: Timer = $FeedbackLabelTimer
 
 const STOPPABLE_GROUP: String = "stoppable"
-const MARGIN: float = 80.0
+const MARGIN: float = 180.0
 const MAX_LIVES: int = 3
 const BONUS_LIVE_POINTS_NEEDED: int = 10
 
