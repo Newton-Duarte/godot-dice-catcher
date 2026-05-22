@@ -22,15 +22,17 @@ const MIN_SPAWN_TIMER: float = 1.0
 const GOLDEN_DICE_CHANCE_PERCENT: int = 10
 const BAD_DICE_CHANCE_PERCENT: int = 5
 const MIN_BAD_DICE_TIMER: float = 3.0
+const MAX_MUSIC_PITCH_SCALE: float = 1.5
 
 var _points: int = 0
 var _lives: int = 3
 var _next_live_bonus_points: int = 0
 
 var _dice_speed_multiplier = 1.0
-var _dice_speed_multiplier_tick = 0.2
-var _difficulty_multiplier_tick = 0.2
-var _bad_dice_timer_tick = 0.2
+var _dice_speed_multiplier_tick = 0.1
+var _difficulty_multiplier_tick = 0.1
+var _bad_dice_timer_tick = 0.1
+var _music_pitch_scale_tick = 0.05
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("restart"):
@@ -57,7 +59,7 @@ func get_dice_to_spawn() -> Dice:
 	)
 	new_dice.position = Vector2(new_position_x, -MARGIN)
 	new_dice.off_screen.connect(_on_dice_off_screen)
-	new_dice.speed_multiplier = min(_dice_speed_multiplier, MAX_DICE_SPEED_MULTIPLIER)
+	new_dice.speed_multiplier = _dice_speed_multiplier
 	return new_dice
 
 func pause_all() -> void:
@@ -118,9 +120,10 @@ func _on_feedback_label_timer_timeout() -> void:
 	feedback_label.hide()
 
 func _on_difficulty_timer_timeout() -> void:
-	_dice_speed_multiplier += _dice_speed_multiplier_tick
+	_dice_speed_multiplier = min(_dice_speed_multiplier + _dice_speed_multiplier_tick, MAX_DICE_SPEED_MULTIPLIER)
 	spawn_timer.wait_time = max(spawn_timer.wait_time - _difficulty_multiplier_tick, MIN_SPAWN_TIMER)
 	bad_dice_timer.wait_time = max(bad_dice_timer.wait_time - _bad_dice_timer_tick, MIN_BAD_DICE_TIMER)
+	music.pitch_scale = min(music.pitch_scale + _music_pitch_scale_tick, MAX_MUSIC_PITCH_SCALE)
 
 func _on_bad_dice_timer_timeout() -> void:
 	var bad_dice: Dice = get_dice_to_spawn()
