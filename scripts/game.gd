@@ -92,12 +92,21 @@ func game_over() -> void:
 
 func lose_life() -> void:
 	_lives = max(_lives - 1, 0)
+	show_feedback_label("-1 Life")
 	update_lives()
 
 	if _lives <= 0:
 		game_over()
 	else:
 		negative_sound.play()
+
+func check_bonus_life() -> void:
+	if _next_live_bonus_points >= BONUS_LIVE_POINTS_NEEDED:
+		_next_live_bonus_points -= BONUS_LIVE_POINTS_NEEDED
+		_lives = min(_lives + 1, MAX_LIVES)
+		extra_life_sound.play()
+		show_feedback_label("+1 Life")
+		update_lives()
 
 func _on_dice_off_screen(is_bad: bool) -> void:
 	if is_bad: return
@@ -132,4 +141,14 @@ func _on_bad_dice_timer_timeout() -> void:
 
 func _on_fox_lose_life() -> void:
 	lose_life()
-	show_feedback_label("-1 Life")
+
+func _on_fox_dice_caught(dice: Dice) -> void:
+	if dice.is_bad:
+		lose_life()
+		return
+
+	_points += dice.points
+	_next_live_bonus_points += dice.points
+	show_feedback_label("+%s" % dice.points)
+	update_score_label()
+	check_bonus_life()
