@@ -105,6 +105,7 @@ func show_feedback_label(text: String) -> void:
 
 func game_over() -> void:
 	_game_state = GAME_STATE.GAMEOVER
+	ScoreManager.high_score = _points
 	feedback_label.hide()
 	game_over_label.show()
 	pause_all()
