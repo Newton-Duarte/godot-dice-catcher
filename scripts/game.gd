@@ -12,6 +12,7 @@ const GAME_OVER = preload("uid://eii2vgkwahql")
 @onready var feedback_label: Label = $CanvasLayer/FeedbackLabel
 @onready var feedback_label_timer: Timer = $FeedbackLabelTimer
 @onready var bad_dice_timer: Timer = $BadDiceTimer
+@onready var elapsed_timer_label: Label = $CanvasLayer/ElapsedTimerLabel
 
 const STOPPABLE_GROUP: String = "stoppable"
 const MARGIN: float = 180.0
@@ -27,6 +28,7 @@ const MAX_MUSIC_PITCH_SCALE: float = 1.5
 var _points: int = 0
 var _lives: int = 3
 var _next_live_bonus_points: int = 0
+var _elapsed_time: float = 0
 
 var _dice_speed_multiplier = 1.0
 var _dice_speed_multiplier_tick = 0.1
@@ -42,6 +44,15 @@ func _ready() -> void:
 	feedback_label.hide()
 	update_score_label()
 	spawn_dice()
+
+func _process(delta: float) -> void:
+	_elapsed_time += delta
+	update_elapsed_time_label()
+
+func update_elapsed_time_label() -> void:
+	var minutes: float = _elapsed_time / 60
+	var seconds: float = fmod(_elapsed_time, 60)
+	elapsed_timer_label.text = "%02d:%02d" % [minutes, seconds]
 
 func spawn_dice() -> void:
 	var new_dice = get_dice_to_spawn()
