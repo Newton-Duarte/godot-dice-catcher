@@ -13,6 +13,8 @@ const GAME_OVER = preload("uid://eii2vgkwahql")
 @onready var feedback_label_timer: Timer = $FeedbackLabelTimer
 @onready var bad_dice_timer: Timer = $BadDiceTimer
 @onready var elapsed_timer_label: Label = $CanvasLayer/ElapsedTimerLabel
+@onready var game_over_label: Label = $CanvasLayer/GameOverLabel
+@onready var press_to_play_label: Label = $CanvasLayer/PressToPlayLabel
 
 const STOPPABLE_GROUP: String = "stoppable"
 const MARGIN: float = 180.0
@@ -36,7 +38,13 @@ var _difficulty_multiplier_tick = 0.1
 var _bad_dice_timer_tick = 0.1
 var _music_pitch_scale_tick = 0.05
 
+enum GAME_STATE { PLAY, PAUSED, GAMEOVER }
+
+var _game_state: GAME_STATE = GAME_STATE.PLAY
+
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_accept") and _game_state == GAME_STATE.GAMEOVER:
+		get_tree().reload_current_scene()
 	if event.is_action_pressed("restart"):
 		GameManager.load_main_scene()
 
@@ -46,8 +54,9 @@ func _ready() -> void:
 	spawn_dice()
 
 func _process(delta: float) -> void:
-	_elapsed_time += delta
-	update_elapsed_time_label()
+	if _game_state == GAME_STATE.PLAY:
+		_elapsed_time += delta
+		update_elapsed_time_label()
 
 func update_elapsed_time_label() -> void:
 	var minutes: float = _elapsed_time / 60
@@ -95,11 +104,15 @@ func show_feedback_label(text: String) -> void:
 	feedback_label_timer.start()
 
 func game_over() -> void:
-	show_feedback_label("Game Over")
+	_game_state = GAME_STATE.GAMEOVER
+	feedback_label.hide()
+	game_over_label.show()
 	pause_all()
 	music.stop()
 	music.stream = GAME_OVER
 	music.play()
+	await get_tree().create_timer(2.0).timeout
+	press_to_play_label.show()
 
 func lose_life() -> void:
 	_lives = max(_lives - 1, 0)
