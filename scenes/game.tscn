@@ -8,19 +8,12 @@
 [ext_resource type="AudioStream" uid="uid://dmxh7tbbljx03" path="res://assets/extra_life_sound.wav" id="6_gee14"]
 [ext_resource type="AudioStream" uid="uid://cgym1fqiiysm6" path="res://assets/negative_sound.wav" id="6_p57ef"]
 [ext_resource type="Texture2D" uid="uid://c521h60u1k7mt" path="res://assets/Fox.png" id="7_u5sy4"]
+[ext_resource type="LabelSettings" uid="uid://dn5xlrekynjpi" path="res://resources/white_label_48.tres" id="7_vtaks"]
+[ext_resource type="LabelSettings" uid="uid://be3f0yh4knqk2" path="res://resources/orange_label_32.tres" id="8_kvpfn"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_iywne"]
 font = ExtResource("4_lbhrr")
 font_size = 40
-outline_size = 4
-outline_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
-shadow_size = 4
-shadow_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_gee14"]
-font = ExtResource("4_lbhrr")
-font_size = 24
-font_color = Color(0, 0.65882355, 1, 1)
 outline_size = 4
 outline_color = Color(0.11764706, 0.11764706, 0.11764706, 1)
 shadow_size = 4
@@ -62,7 +55,7 @@ offset_top = 32.0
 offset_right = 146.0
 offset_bottom = 73.0
 text = "Score"
-label_settings = SubResource("LabelSettings_iywne")
+label_settings = ExtResource("7_vtaks")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -72,7 +65,7 @@ offset_top = 83.0
 offset_right = 146.0
 offset_bottom = 124.0
 text = "00:00"
-label_settings = SubResource("LabelSettings_gee14")
+label_settings = ExtResource("8_kvpfn")
 horizontal_alignment = 1
 vertical_alignment = 1
 

@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Dice Catcher"
-run/main_scene="uid://xlj61jrmvlld"
+run/main_scene="uid://dhs65ok2aa7vc"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameManager="*uid://br2egfgu8u6hb"
 
 [display]
 
