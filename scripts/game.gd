@@ -1,6 +1,7 @@
 extends Node2D
 
 const DICE = preload("res://scenes/dice.tscn")
+const GOLDEN_DICE = preload("res://scenes/golden_dice.tscn")
 const GAME_OVER = preload("uid://eii2vgkwahql")
 
 @onready var spawn_timer: Timer = $SpawnTimer
@@ -18,6 +19,7 @@ const MAX_LIVES: int = 3
 const BONUS_LIVE_POINTS_NEEDED: int = 10
 const MAX_DICE_SPEED_MULTIPLIER: float = 2.0
 const MIN_SPAWN_TIMER: float = 1.0
+const GOLDEN_DICE_CHANCE: int = 10
 
 var _points: int = 0
 var _lives: int = 3
@@ -38,7 +40,8 @@ func _ready() -> void:
 	spawn_dice()
 
 func spawn_dice() -> void:
-	var new_dice: Dice = DICE.instantiate()
+	var rare_dice_number: int = randi() % 100 + 1 <= GOLDEN_DICE_CHANCE
+	var new_dice: Dice = GOLDEN_DICE.instantiate() if rare_dice_number else DICE.instantiate()
 	var viewport_rect = get_viewport_rect()
 	var new_position_x = randf_range(
 		viewport_rect.position.x + MARGIN,
@@ -86,11 +89,11 @@ func _on_dice_off_screen() -> void:
 	else:
 		negative_sound.play()
 
-func _on_fox_point_scored() -> void:
-	_points += 1
-	_next_live_bonus_points += 1
+func _on_fox_point_scored(points: int) -> void:
+	_points += points
+	_next_live_bonus_points += points
 	update_score_label()
-	show_feedback_label("+%s" % 1)
+	show_feedback_label("+%s" % points)
 	if _next_live_bonus_points >= BONUS_LIVE_POINTS_NEEDED:
 		_next_live_bonus_points -= BONUS_LIVE_POINTS_NEEDED
 		_lives = min(_lives + 1, MAX_LIVES)

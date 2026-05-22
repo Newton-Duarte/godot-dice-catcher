@@ -6,6 +6,8 @@ signal off_screen
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
+@export var points: int = 1
+
 const SPEED: float = 150.0
 const ROTATION_SPEED: float = 5.0
 
