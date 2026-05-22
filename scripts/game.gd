@@ -40,8 +40,8 @@ func _ready() -> void:
 	spawn_dice()
 
 func spawn_dice() -> void:
-	var rare_dice_chance: bool = randi() % 100 + 1 <= GOLDEN_DICE_CHANCE
-	var new_dice: Dice = GOLDEN_DICE.instantiate() if rare_dice_chance else DICE.instantiate()
+	var should_spawn_golden_dice: bool = randi() % 100 + 1 <= GOLDEN_DICE_CHANCE
+	var new_dice: Dice = GOLDEN_DICE.instantiate() if should_spawn_golden_dice else DICE.instantiate()
 	var viewport_rect = get_viewport_rect()
 	var new_position_x = randf_range(
 		viewport_rect.position.x + MARGIN,
