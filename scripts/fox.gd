@@ -30,7 +30,8 @@ func _on_area_entered(area: Area2D) -> void:
 			lose_life.emit()
 			area.queue_free()
 			return
-
+		
+		sounds.pitch_scale = randf_range(0.75, 1.5)
 		sounds.play()
 		point_scored.emit(area.points)
 		area.queue_free()
