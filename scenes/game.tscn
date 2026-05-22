@@ -37,7 +37,7 @@ position = Vector2(570, 589)
 stream = ExtResource("5_iywne")
 volume_db = -10.0
 autoplay = true
-parameters/looping = false
+parameters/looping = true
 
 [node name="NegativeSound" type="AudioStreamPlayer2D" parent="." unique_id=687912533]
 stream = ExtResource("6_p57ef")
