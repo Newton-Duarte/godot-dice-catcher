@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://bhxltqtcpw5uh"]
+
+[ext_resource type="Script" uid="uid://cife7ock03mu8" path="res://scripts/loading.gd" id="1_dhqfv"]
+[ext_resource type="Texture2D" uid="uid://hjt2a50it2vy" path="res://assets/GemBg.png" id="1_yc7uc"]
+[ext_resource type="LabelSettings" uid="uid://cxgls1gsvb4is" path="res://resources/orange_label_48.tres" id="2_yc7uc"]
+
+[sub_resource type="Animation" id="Animation_yc7uc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LoadingLabel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_dhqfv"]
+resource_name = "flash"
+length = 0.3
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LoadingLabel:modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_101rs"]
+_data = {
+&"RESET": SubResource("Animation_yc7uc"),
+&"flash": SubResource("Animation_dhqfv")
+}
+
+[node name="Loading" type="Control" unique_id=947467120]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dhqfv")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1897670410]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_yc7uc")
+expand_mode = 1
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2118479197]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1764706, 0.20392157, 0.21176471, 0.78431374)
+
+[node name="LoadingLabel" type="Label" parent="." unique_id=81334135]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -108.0
+offset_top = -24.5
+offset_right = 108.0
+offset_bottom = 24.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Loading..."
+label_settings = ExtResource("2_yc7uc")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=356723793]
+libraries/ = SubResource("AnimationLibrary_101rs")
+autoplay = &"flash"

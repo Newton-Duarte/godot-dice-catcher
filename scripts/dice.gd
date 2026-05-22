@@ -14,7 +14,7 @@ var rotate_direction: float = 1.0
 var speed_multiplier: float = 1.0
 var points: int = 1
 var dice_rare_color: Color = Color("#FFD700")
-var dice_bad_color: Color = Color("#880808")
+var dice_bad_color: Color = Color("#d63031")
 var is_rare: bool = false
 var is_bad: bool = false
 
