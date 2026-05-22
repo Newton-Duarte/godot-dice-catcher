@@ -8,6 +8,7 @@ const EDGE_SPRITE_MARGIN = 55.0
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var sounds: AudioStreamPlayer2D = $Sounds
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 @export var speed: float = 300.0
 
@@ -18,7 +19,10 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var direction = Input.get_axis("ui_left", "ui_right")
-	if !is_zero_approx(direction):
+	if is_zero_approx(direction):
+		animation_player.play("RESET")	
+	elif !is_zero_approx(direction):
+		animation_player.play("walk")
 		sprite_2d.flip_h = direction > 0.0
 	var new_pos_x = position.x + speed * direction * delta
 	position.x = clampf(new_pos_x, viewport_rect.position.x + EDGE_SPRITE_MARGIN, viewport_rect.end.x - EDGE_SPRITE_MARGIN)
