@@ -1,7 +1,6 @@
 extends Node2D
 
 const DICE = preload("res://scenes/dice.tscn")
-const GOLDEN_DICE = preload("res://scenes/golden_dice.tscn")
 const GAME_OVER = preload("uid://eii2vgkwahql")
 
 @onready var spawn_timer: Timer = $SpawnTimer
@@ -19,7 +18,7 @@ const MAX_LIVES: int = 3
 const BONUS_LIVE_POINTS_NEEDED: int = 10
 const MAX_DICE_SPEED_MULTIPLIER: float = 2.0
 const MIN_SPAWN_TIMER: float = 1.0
-const GOLDEN_DICE_CHANCE: int = 10
+const GOLDEN_DICE_CHANCE_PERCENT: int = 10
 
 var _points: int = 0
 var _lives: int = 3
@@ -40,8 +39,7 @@ func _ready() -> void:
 	spawn_dice()
 
 func spawn_dice() -> void:
-	var should_spawn_golden_dice: bool = randi() % 100 + 1 <= GOLDEN_DICE_CHANCE
-	var new_dice: Dice = GOLDEN_DICE.instantiate() if should_spawn_golden_dice else DICE.instantiate()
+	var new_dice: Dice = DICE.instantiate()
 	var viewport_rect = get_viewport_rect()
 	var new_position_x = randf_range(
 		viewport_rect.position.x + MARGIN,
@@ -50,6 +48,9 @@ func spawn_dice() -> void:
 	new_dice.position = Vector2(new_position_x, -MARGIN)
 	new_dice.off_screen.connect(_on_dice_off_screen)
 	new_dice.speed_multiplier = min(_dice_speed_multiplier, MAX_DICE_SPEED_MULTIPLIER)
+	var should_spawn_golden_dice: bool = randi() % 100 + 1 <= GOLDEN_DICE_CHANCE_PERCENT
+	if should_spawn_golden_dice:
+		new_dice.setup_rare_dice()
 	add_child(new_dice)
 
 func pause_all() -> void:
