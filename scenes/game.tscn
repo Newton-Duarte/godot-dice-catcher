@@ -90,6 +90,11 @@ texture = ExtResource("7_u5sy4")
 wait_time = 1.5
 one_shot = true
 
+[node name="DifficultyTimer" type="Timer" parent="." unique_id=264924506]
+wait_time = 15.0
+autostart = true
+
 [connection signal="timeout" from="SpawnTimer" to="." method="spawn_dice"]
 [connection signal="point_scored" from="Fox" to="." method="_on_fox_point_scored"]
 [connection signal="timeout" from="FeedbackLabelTimer" to="." method="_on_feedback_label_timer_timeout"]
+[connection signal="timeout" from="DifficultyTimer" to="." method="_on_difficulty_timer_timeout"]

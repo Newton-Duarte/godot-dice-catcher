@@ -9,7 +9,7 @@ const EDGE_SPRITE_MARGIN = 55.0
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var sounds: AudioStreamPlayer2D = $Sounds
 
-@export var speed: float = 200.0
+@export var speed: float = 300.0
 
 var viewport_rect: Rect2
 

@@ -16,10 +16,17 @@ const STOPPABLE_GROUP: String = "stoppable"
 const MARGIN: float = 180.0
 const MAX_LIVES: int = 3
 const BONUS_LIVE_POINTS_NEEDED: int = 10
+const MAX_DICE_SPEED_MULTIPLIER: float = 2.0
+const MIN_SPAWN_TIMER: float = 1.0
 
 var _points: int = 0
 var _lives: int = 3
 var _next_live_bonus_points: int = 0
+
+var _dice_speed_multiplier = 1.0
+var _dice_speed_multiplier_tick = 0.25
+
+var _difficulty_multiplier_tick = 0.25
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("restart"):
@@ -39,6 +46,7 @@ func spawn_dice() -> void:
 	)
 	new_dice.position = Vector2(new_position_x, -MARGIN)
 	new_dice.off_screen.connect(_on_dice_off_screen)
+	new_dice.speed_multiplier = min(_dice_speed_multiplier, MAX_DICE_SPEED_MULTIPLIER)
 	add_child(new_dice)
 
 func pause_all() -> void:
@@ -92,3 +100,7 @@ func _on_fox_point_scored() -> void:
 
 func _on_feedback_label_timer_timeout() -> void:
 	feedback_label.hide()
+
+func _on_difficulty_timer_timeout() -> void:
+	_dice_speed_multiplier += _dice_speed_multiplier_tick
+	spawn_timer.wait_time = max(spawn_timer.wait_time - _difficulty_multiplier_tick, MIN_SPAWN_TIMER)
