@@ -3,6 +3,7 @@ class_name Fox
 extends Area2D
 
 signal point_scored(points: int)
+signal lose_life
 
 const EDGE_SPRITE_MARGIN = 55.0
 
@@ -25,6 +26,11 @@ func _physics_process(delta: float) -> void:
 
 func _on_area_entered(area: Area2D) -> void:
 	if area is Dice:
+		if area.is_bad:
+			lose_life.emit()
+			area.queue_free()
+			return
+
 		sounds.play()
 		point_scored.emit(area.points)
 		area.queue_free()

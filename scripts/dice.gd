@@ -2,7 +2,7 @@ class_name Dice
 
 extends Area2D
 
-signal off_screen
+signal off_screen(is_bad: bool)
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
@@ -14,7 +14,9 @@ var rotate_direction: float = 1.0
 var speed_multiplier: float = 1.0
 var points: int = 1
 var dice_rare_color: Color = Color("#FFD700")
+var dice_bad_color: Color = Color("#880808")
 var is_rare: bool = false
+var is_bad: bool = false
 
 func _ready() -> void:
 	rotate_direction = rotate_directions.pick_random()
@@ -29,7 +31,11 @@ func setup_rare_dice() -> void:
 	points = 5
 	modulate = dice_rare_color
 
+func setup_bad_dice() -> void:
+	is_bad = true
+	modulate = dice_bad_color
+
 func check_off_screen() -> void:
 	if get_viewport_rect().end.y < position.y:
-		off_screen.emit()
+		off_screen.emit(is_bad)
 		queue_free()
