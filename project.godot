@@ -13,7 +13,7 @@ config_version=5
 config/name="Dice Catcher"
 run/main_scene="uid://dhs65ok2aa7vc"
 config/features=PackedStringArray("4.6", "Mobile")
-config/icon="res://icon.svg"
+config/icon="uid://ee2ngdpyd4nw"
 
 [autoload]
 
