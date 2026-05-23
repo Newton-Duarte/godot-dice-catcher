@@ -151,8 +151,8 @@ func check_streak() -> void:
 		_streak_count = 0
 		_bonus_live_points_needed = DEFAULT_BONUS_LIVE_POINTS_NEEDED * _points_multiplier
 
-func _on_dice_off_screen(is_bad: bool) -> void:
-	if is_bad: return
+func _on_dice_off_screen(dice: Dice) -> void:
+	if dice.is_bad: return
 	show_feedback_label("Miss")
 	lose_life()
 

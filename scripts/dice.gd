@@ -2,7 +2,7 @@ class_name Dice
 
 extends Area2D
 
-signal off_screen(is_bad: bool)
+signal off_screen(dice: Dice)
 
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
@@ -35,5 +35,5 @@ func setup_bad_dice() -> void:
 	modulate = dice_bad_color
 
 func _on_screen_exited() -> void:
-	off_screen.emit(is_bad)
+	off_screen.emit(self)
 	queue_free()
