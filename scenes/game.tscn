@@ -12,6 +12,7 @@
 [ext_resource type="LabelSettings" uid="uid://flbr3kt6j8cb" path="res://resources/yellow_label_24.tres" id="9_dinhu"]
 [ext_resource type="LabelSettings" uid="uid://dub1v61e71yhj" path="res://resources/yellow_label_32.tres" id="9_kvpfn"]
 [ext_resource type="LabelSettings" uid="uid://cxgls1gsvb4is" path="res://resources/orange_label_48.tres" id="10_kvpfn"]
+[ext_resource type="Script" uid="uid://djcjq03ss2rfe" path="res://scripts/main_camera.gd" id="13_kvuet"]
 
 [sub_resource type="Animation" id="Animation_kvpfn"]
 length = 0.001
@@ -188,6 +189,10 @@ autostart = true
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1104348180]
 libraries/ = SubResource("AnimationLibrary_kvuet")
 autoplay = &"flash"
+
+[node name="MainCamera" type="Camera2D" parent="." unique_id=1549525054]
+anchor_mode = 0
+script = ExtResource("13_kvuet")
 
 [connection signal="timeout" from="SpawnTimer" to="." method="spawn_dice"]
 [connection signal="dice_caught" from="Fox" to="." method="_on_fox_dice_caught"]

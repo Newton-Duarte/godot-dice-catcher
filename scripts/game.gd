@@ -21,6 +21,7 @@ const RED_LABEL_32 = preload("uid://bc1po10logh11")
 @onready var game_over_label: Label = $CanvasLayer/GameOverLabel
 @onready var press_to_play_label: Label = $CanvasLayer/PressToPlayLabel
 @onready var streak_label: Label = $CanvasLayer/StreakLabel
+@onready var main_camera: Camera2D = $MainCamera
 
 const STOPPABLE_GROUP: String = "stoppable"
 const MARGIN: float = 180.0
@@ -33,7 +34,7 @@ const MIN_BAD_DICE_TIMER: float = 3.0
 const MAX_MUSIC_PITCH_SCALE: float = 1.5
 const MAX_POINTS_MULTIPLIER: int = 5
 const DEFAULT_BONUS_LIVE_POINTS_NEEDED: int = 10
-const DEFAULT_STREAK_GOAL: int = 2
+const DEFAULT_STREAK_GOAL: int = 10
 
 enum LABEL_SETTINGS { WHITE, YELLOW, RED }
 
@@ -137,6 +138,7 @@ func game_over() -> void:
 	press_to_play_label.show()
 
 func lose_life() -> void:
+	main_camera.shake()
 	if _points_multiplier > 1:
 		streak_label.hide()
 		show_feedback_label("Streak Lost", LABEL_SETTINGS.RED)
