@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c521h60u1k7mt" path="res://assets/Fox.png" id="7_u5sy4"]
 [ext_resource type="LabelSettings" uid="uid://dn5xlrekynjpi" path="res://resources/white_label_48.tres" id="7_vtaks"]
 [ext_resource type="LabelSettings" uid="uid://be3f0yh4knqk2" path="res://resources/orange_label_32.tres" id="8_kvpfn"]
+[ext_resource type="LabelSettings" uid="uid://flbr3kt6j8cb" path="res://resources/yellow_label_24.tres" id="9_dinhu"]
 [ext_resource type="LabelSettings" uid="uid://dub1v61e71yhj" path="res://resources/yellow_label_32.tres" id="9_kvpfn"]
 [ext_resource type="LabelSettings" uid="uid://cxgls1gsvb4is" path="res://resources/orange_label_48.tres" id="10_kvpfn"]
 
@@ -97,6 +98,17 @@ offset_right = 146.0
 offset_bottom = 124.0
 text = "00:00"
 label_settings = ExtResource("8_kvpfn")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StreakLabel" type="Label" parent="CanvasLayer" unique_id=725911495]
+visible = false
+offset_left = 32.0
+offset_top = 121.0
+offset_right = 146.0
+offset_bottom = 162.0
+text = "Streak: x1"
+label_settings = ExtResource("9_dinhu")
 horizontal_alignment = 1
 vertical_alignment = 1
 

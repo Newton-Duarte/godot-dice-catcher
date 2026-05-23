@@ -20,6 +20,7 @@ const RED_LABEL_32 = preload("uid://bc1po10logh11")
 @onready var elapsed_timer_label: Label = $CanvasLayer/ElapsedTimerLabel
 @onready var game_over_label: Label = $CanvasLayer/GameOverLabel
 @onready var press_to_play_label: Label = $CanvasLayer/PressToPlayLabel
+@onready var streak_label: Label = $CanvasLayer/StreakLabel
 
 const STOPPABLE_GROUP: String = "stoppable"
 const MARGIN: float = 180.0
@@ -32,7 +33,7 @@ const MIN_BAD_DICE_TIMER: float = 3.0
 const MAX_MUSIC_PITCH_SCALE: float = 1.5
 const MAX_POINTS_MULTIPLIER: int = 5
 const DEFAULT_BONUS_LIVE_POINTS_NEEDED: int = 10
-const DEFAULT_STREAK_GOAL: int = 10
+const DEFAULT_STREAK_GOAL: int = 2
 
 enum LABEL_SETTINGS { WHITE, YELLOW, RED }
 
@@ -137,6 +138,7 @@ func game_over() -> void:
 
 func lose_life() -> void:
 	if _points_multiplier > 1:
+		streak_label.hide()
 		show_feedback_label("Streak Lost", LABEL_SETTINGS.RED)
 
 	_lives = max(_lives - 1, 0)
@@ -165,6 +167,8 @@ func check_streak() -> void:
 		return
 	if _streak_count >= _streak_goal:
 		_points_multiplier = min(_points_multiplier + 1, MAX_POINTS_MULTIPLIER)
+		streak_label.text = "Streak: x%s" % _points_multiplier
+		streak_label.show()
 		show_feedback_label("x%d Streak" % _points_multiplier)
 		_streak_count = 0
 		_bonus_live_points_needed = DEFAULT_BONUS_LIVE_POINTS_NEEDED * _points_multiplier
