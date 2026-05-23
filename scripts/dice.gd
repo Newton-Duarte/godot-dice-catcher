@@ -24,7 +24,6 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	sprite_2d.rotate((ROTATION_SPEED * rotate_direction) * delta)
 	position.y += (SPEED * speed_multiplier) * delta
-	check_off_screen()
 
 func setup_rare_dice() -> void:
 	is_rare = true
@@ -35,7 +34,6 @@ func setup_bad_dice() -> void:
 	is_bad = true
 	modulate = dice_bad_color
 
-func check_off_screen() -> void:
-	if get_viewport_rect().end.y < position.y:
-		off_screen.emit(is_bad)
-		queue_free()
+func _on_screen_exited() -> void:
+	off_screen.emit(is_bad)
+	queue_free()

@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://ca32qso81ipd"]
+
+[ext_resource type="LabelSettings" uid="uid://dub1v61e71yhj" path="res://resources/yellow_label_32.tres" id="1_2vpra"]
+
+[node name="AnimatedLabel" type="Label" unique_id=324072987]
+offset_right = 122.0
+offset_bottom = 33.0
+text = "Label"
+label_settings = ExtResource("1_2vpra")
+horizontal_alignment = 1
+vertical_alignment = 1
