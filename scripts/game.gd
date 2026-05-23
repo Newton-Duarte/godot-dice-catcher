@@ -2,6 +2,11 @@ extends Node2D
 
 const DICE = preload("res://scenes/dice.tscn")
 const GAME_OVER = preload("uid://eii2vgkwahql")
+const ANIMATED_LABEL = preload("uid://ca32qso81ipd")
+
+const YELLOW_LABEL_32 = preload("uid://dub1v61e71yhj")
+const WHITE_LABEL_32 = preload("uid://0yxyve4ar1h6")
+const RED_LABEL_32 = preload("uid://bc1po10logh11")
 
 @onready var spawn_timer: Timer = $SpawnTimer
 @onready var score_label: Label = $CanvasLayer/ScoreLabel
@@ -29,12 +34,20 @@ const MAX_POINTS_MULTIPLIER: int = 5
 const DEFAULT_BONUS_LIVE_POINTS_NEEDED: int = 10
 const DEFAULT_STREAK_GOAL: int = 10
 
+enum LABEL_SETTINGS { WHITE, YELLOW, RED }
+
+var animated_label_settings: Dictionary[LABEL_SETTINGS, Resource] = {
+	LABEL_SETTINGS.WHITE: WHITE_LABEL_32,
+	LABEL_SETTINGS.YELLOW: YELLOW_LABEL_32,
+	LABEL_SETTINGS.RED: RED_LABEL_32
+}
+
 var _points: int = 0
 var _points_multiplier: int = 1
 var _streak_count: int = 0
 var _streak_goal: int = DEFAULT_STREAK_GOAL
 var _lives: int = 3
-var _bonus_live_points_needed: int = 10
+var _bonus_live_points_needed: int = DEFAULT_BONUS_LIVE_POINTS_NEEDED
 var _next_live_bonus_points: int = 0
 var _elapsed_time: float = 0
 
@@ -104,7 +117,8 @@ func update_lives() -> void:
 	for index in life_icons.size():
 		life_icons[index].visible = index < _lives
 
-func show_feedback_label(text: String) -> void:
+func show_feedback_label(text: String, type: LABEL_SETTINGS = LABEL_SETTINGS.YELLOW) -> void:
+	feedback_label.label_settings = animated_label_settings[type]
 	feedback_label.text = text
 	feedback_label.show()
 	feedback_label_timer.start()
@@ -122,11 +136,14 @@ func game_over() -> void:
 	press_to_play_label.show()
 
 func lose_life() -> void:
+	if _points_multiplier > 1:
+		show_feedback_label("Streak Lost", LABEL_SETTINGS.RED)
+
 	_lives = max(_lives - 1, 0)
 	_points_multiplier = 1
 	_streak_count = 0
+	_next_live_bonus_points = 0
 	_bonus_live_points_needed = DEFAULT_BONUS_LIVE_POINTS_NEEDED
-	show_feedback_label("-1 Life")
 	update_lives()
 
 	if _lives <= 0:
@@ -134,26 +151,39 @@ func lose_life() -> void:
 	else:
 		negative_sound.play()
 
-func check_bonus_life() -> void:
-	if _next_live_bonus_points >= _bonus_live_points_needed:
-		_next_live_bonus_points -= _bonus_live_points_needed
-		_lives = min(_lives + 1, MAX_LIVES)
-		extra_life_sound.play()
-		show_feedback_label("+1 Life")
-		update_lives()
+func should_add_bonus_life() -> bool:
+	return _next_live_bonus_points >= _bonus_live_points_needed
+
+func add_bonus_life() -> void:
+	_next_live_bonus_points -= _bonus_live_points_needed
+	_lives = min(_lives + 1, MAX_LIVES)
+	extra_life_sound.play()
+	update_lives()
 
 func check_streak() -> void:
 	if _points_multiplier == MAX_POINTS_MULTIPLIER:
 		return
 	if _streak_count >= _streak_goal:
 		_points_multiplier = min(_points_multiplier + 1, MAX_POINTS_MULTIPLIER)
-		show_feedback_label("x%d Combo" % _points_multiplier)
+		show_feedback_label("x%d Streak" % _points_multiplier)
 		_streak_count = 0
 		_bonus_live_points_needed = DEFAULT_BONUS_LIVE_POINTS_NEEDED * _points_multiplier
 
+func show_animated_label(text: String, type: LABEL_SETTINGS, position: Vector2) -> void:
+	var label_scene: Label = ANIMATED_LABEL.instantiate()
+	label_scene.label_settings = animated_label_settings[type]
+	label_scene.text = text
+	add_child(label_scene)
+	label_scene.global_position = position
+	var tween: Tween = create_tween()
+	tween.tween_property(label_scene, "global_position", label_scene.global_position - Vector2(0, 50), 0.3)
+	tween.tween_property(label_scene, "modulate:a", 0.0, 0.3)
+	tween.tween_callback(label_scene.queue_free)
+
 func _on_dice_off_screen(dice: Dice) -> void:
 	if dice.is_bad: return
-	show_feedback_label("Miss")
+	
+	show_animated_label("Miss", LABEL_SETTINGS.WHITE, dice.global_position)
 	lose_life()
 
 func _on_feedback_label_timer_timeout() -> void:
@@ -176,13 +206,16 @@ func _on_fox_lose_life() -> void:
 func _on_fox_dice_caught(dice: Dice) -> void:
 	if dice.is_bad:
 		lose_life()
+		show_animated_label("-1 Life", LABEL_SETTINGS.RED, dice.global_position)
 		return
 	
 	var dice_points = dice.points * _points_multiplier
 	_points += dice_points
 	_next_live_bonus_points += dice_points
 	_streak_count += 1
-	show_feedback_label("+%s" % dice_points)
+	show_animated_label("+%s" % dice_points, LABEL_SETTINGS.YELLOW if dice.is_rare else LABEL_SETTINGS.WHITE, dice.global_position)
 	update_score_label()
-	check_bonus_life()
 	check_streak()
+	if should_add_bonus_life():
+		add_bonus_life()
+		show_animated_label("+1 Life", LABEL_SETTINGS.YELLOW, dice.global_position)

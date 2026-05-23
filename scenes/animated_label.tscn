@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ca32qso81ipd"]
 
-[ext_resource type="LabelSettings" uid="uid://dub1v61e71yhj" path="res://resources/yellow_label_32.tres" id="1_2vpra"]
+[ext_resource type="LabelSettings" uid="uid://bc1po10logh11" path="res://resources/red_label_32.tres" id="1_2vpra"]
 
 [node name="AnimatedLabel" type="Label" unique_id=324072987]
 offset_right = 122.0
