@@ -19,16 +19,22 @@ const GAME_OVER = preload("uid://eii2vgkwahql")
 const STOPPABLE_GROUP: String = "stoppable"
 const MARGIN: float = 180.0
 const MAX_LIVES: int = 3
-const BONUS_LIVE_POINTS_NEEDED: int = 10
 const MAX_DICE_SPEED_MULTIPLIER: float = 2.0
 const MIN_SPAWN_TIMER: float = 1.0
 const GOLDEN_DICE_CHANCE_PERCENT: int = 10
 const BAD_DICE_CHANCE_PERCENT: int = 5
 const MIN_BAD_DICE_TIMER: float = 3.0
 const MAX_MUSIC_PITCH_SCALE: float = 1.5
+const MAX_POINTS_MULTIPLIER: int = 5
+const DEFAULT_BONUS_LIVE_POINTS_NEEDED: int = 10
+const DEFAULT_STREAK_GOAL: int = 10
 
 var _points: int = 0
+var _points_multiplier: int = 1
+var _streak_count: int = 0
+var _streak_goal: int = DEFAULT_STREAK_GOAL
 var _lives: int = 3
+var _bonus_live_points_needed: int = 10
 var _next_live_bonus_points: int = 0
 var _elapsed_time: float = 0
 
@@ -117,6 +123,9 @@ func game_over() -> void:
 
 func lose_life() -> void:
 	_lives = max(_lives - 1, 0)
+	_points_multiplier = 1
+	_streak_count = 0
+	_bonus_live_points_needed = DEFAULT_BONUS_LIVE_POINTS_NEEDED
 	show_feedback_label("-1 Life")
 	update_lives()
 
@@ -126,29 +135,26 @@ func lose_life() -> void:
 		negative_sound.play()
 
 func check_bonus_life() -> void:
-	if _next_live_bonus_points >= BONUS_LIVE_POINTS_NEEDED:
-		_next_live_bonus_points -= BONUS_LIVE_POINTS_NEEDED
+	if _next_live_bonus_points >= _bonus_live_points_needed:
+		_next_live_bonus_points -= _bonus_live_points_needed
 		_lives = min(_lives + 1, MAX_LIVES)
 		extra_life_sound.play()
 		show_feedback_label("+1 Life")
 		update_lives()
+
+func check_streak() -> void:
+	if _points_multiplier == MAX_POINTS_MULTIPLIER:
+		return
+	if _streak_count >= _streak_goal:
+		_points_multiplier = min(_points_multiplier + 1, MAX_POINTS_MULTIPLIER)
+		show_feedback_label("x%d Combo" % _points_multiplier)
+		_streak_count = 0
+		_bonus_live_points_needed = DEFAULT_BONUS_LIVE_POINTS_NEEDED * _points_multiplier
 
 func _on_dice_off_screen(is_bad: bool) -> void:
 	if is_bad: return
 	show_feedback_label("Miss")
 	lose_life()
-
-func _on_fox_point_scored(points: int) -> void:
-	_points += points
-	_next_live_bonus_points += points
-	update_score_label()
-	show_feedback_label("+%s" % points)
-	if _next_live_bonus_points >= BONUS_LIVE_POINTS_NEEDED:
-		_next_live_bonus_points -= BONUS_LIVE_POINTS_NEEDED
-		_lives = min(_lives + 1, MAX_LIVES)
-		extra_life_sound.play()
-		show_feedback_label("+1 Life")
-		update_lives()
 
 func _on_feedback_label_timer_timeout() -> void:
 	feedback_label.hide()
@@ -171,9 +177,12 @@ func _on_fox_dice_caught(dice: Dice) -> void:
 	if dice.is_bad:
 		lose_life()
 		return
-
-	_points += dice.points
-	_next_live_bonus_points += dice.points
-	show_feedback_label("+%s" % dice.points)
+	
+	var dice_points = dice.points * _points_multiplier
+	_points += dice_points
+	_next_live_bonus_points += dice_points
+	_streak_count += 1
+	show_feedback_label("+%s" % dice_points)
 	update_score_label()
 	check_bonus_life()
+	check_streak()
