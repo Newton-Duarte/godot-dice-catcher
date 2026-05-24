@@ -19,6 +19,7 @@ config/icon="uid://ee2ngdpyd4nw"
 
 GameManager="*uid://br2egfgu8u6hb"
 ScoreManager="*uid://2ylycoevcaya"
+ColorManager="*uid://kpodsq2aji77"
 
 [display]
 
