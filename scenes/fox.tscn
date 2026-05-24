@@ -3,9 +3,10 @@
 [ext_resource type="Script" uid="uid://b8hca1reqqswy" path="res://scripts/fox.gd" id="1_35nom"]
 [ext_resource type="Texture2D" uid="uid://c521h60u1k7mt" path="res://assets/Fox.png" id="1_q320a"]
 [ext_resource type="AudioStream" uid="uid://c2yrri0xe238e" path="res://assets/eating.wav" id="2_ufccv"]
+[ext_resource type="Texture2D" uid="uid://61tagt76j248" path="res://assets/circle_05.png" id="4_3u0el"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ufccv"]
-radius = 58.00862
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3u0el"]
+height = 92.0
 
 [sub_resource type="Animation" id="Animation_35nom"]
 length = 0.001
@@ -54,8 +55,9 @@ texture_filter = 1
 texture = ExtResource("1_q320a")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1560498745]
-position = Vector2(4, 3)
-shape = SubResource("CircleShape2D_ufccv")
+position = Vector2(-5, 15)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_3u0el")
 
 [node name="Sounds" type="AudioStreamPlayer2D" parent="." unique_id=1076716333]
 stream = ExtResource("2_ufccv")
@@ -63,5 +65,19 @@ volume_db = -8.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=858529616]
 libraries/ = SubResource("AnimationLibrary_brrv0")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1850430208]
+position = Vector2(0, 43)
+emitting = false
+texture = ExtResource("4_3u0el")
+lifetime = 0.15000000000000002
+speed_scale = 0.75
+emission_shape = 6
+emission_ring_inner_radius = 0.8
+emission_ring_radius = 1.0
+gravity = Vector2(80, 0)
+scale_amount_min = 0.03
+scale_amount_max = 0.05
+color = Color(0.8745098, 0.9019608, 0.9137255, 1)
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
