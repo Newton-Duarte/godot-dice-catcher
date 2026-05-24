@@ -77,7 +77,7 @@ parameters/looping = true
 [node name="NegativeSound" type="AudioStreamPlayer2D" parent="." unique_id=687912533]
 stream = ExtResource("6_p57ef")
 
-[node name="ExtraLifeSound" type="AudioStreamPlayer2D" parent="." unique_id=1435767764]
+[node name="PositiveSound" type="AudioStreamPlayer2D" parent="." unique_id=1435767764]
 stream = ExtResource("6_gee14")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=677965281]
