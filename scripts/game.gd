@@ -13,7 +13,7 @@ const RED_LABEL_32 = preload("uid://bc1po10logh11")
 @onready var music: AudioStreamPlayer = $Music
 @onready var negative_sound: AudioStreamPlayer2D = $NegativeSound
 @onready var lives_h_box: HBoxContainer = $CanvasLayer/LivesHBox
-@onready var extra_life_sound: AudioStreamPlayer2D = $ExtraLifeSound
+@onready var positive_sound: AudioStreamPlayer2D = $PositiveSound
 @onready var feedback_label: Label = $CanvasLayer/FeedbackLabel
 @onready var feedback_label_timer: Timer = $FeedbackLabelTimer
 @onready var bad_dice_timer: Timer = $BadDiceTimer
@@ -142,6 +142,7 @@ func lose_life() -> void:
 	if _points_multiplier > 1:
 		streak_label.hide()
 		show_feedback_label("Streak Lost", LABEL_SETTINGS.RED)
+		negative_sound.play()
 
 	_lives = max(_lives - 1, 0)
 	_points_multiplier = 1
@@ -161,7 +162,7 @@ func should_add_bonus_life() -> bool:
 func add_bonus_life() -> void:
 	_next_live_bonus_points -= _bonus_live_points_needed
 	_lives = min(_lives + 1, MAX_LIVES)
-	extra_life_sound.play()
+	positive_sound.play()
 	update_lives()
 
 func check_streak() -> void:
@@ -172,6 +173,7 @@ func check_streak() -> void:
 		streak_label.text = "Streak: x%s" % _points_multiplier
 		streak_label.show()
 		show_feedback_label("x%d Streak" % _points_multiplier)
+		positive_sound.play()
 		_streak_count = 0
 		_bonus_live_points_needed = DEFAULT_BONUS_LIVE_POINTS_NEEDED * _points_multiplier
 
