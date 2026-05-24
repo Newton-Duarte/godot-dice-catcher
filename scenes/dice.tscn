@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://wtrtptm6su1" path="res://assets/Dice.png" id="1_27nyo"]
 [ext_resource type="Script" uid="uid://bk33yijmc3tvu" path="res://scripts/dice.gd" id="1_mg5ex"]
+[ext_resource type="Texture2D" uid="uid://61tagt76j248" path="res://assets/circle_05.png" id="3_oi81l"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_27nyo"]
 radius = 37.0
@@ -10,6 +11,7 @@ radius = 37.0
 script = ExtResource("1_mg5ex")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1543258246]
+z_index = 1
 texture_filter = 1
 position = Vector2(0, 38)
 texture = ExtResource("1_27nyo")
@@ -19,5 +21,16 @@ position = Vector2(0, 38)
 shape = SubResource("CircleShape2D_27nyo")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1462637883]
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=1549113162]
+position = Vector2(0, 36)
+texture = ExtResource("3_oi81l")
+lifetime = 0.5
+emission_shape = 1
+emission_sphere_radius = 60.0
+gravity = Vector2(0, -400)
+scale_amount_min = 0.05
+scale_amount_max = 0.07
+color = Color(0.8745098, 0.9019608, 0.9137255, 1)
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_screen_exited"]
