@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://dwvkskgguox8e"]
+
+[ext_resource type="Texture2D" uid="uid://61tagt76j248" path="res://assets/circle_05.png" id="1_17npe"]
+[ext_resource type="Script" uid="uid://bfkwbpxtwut1r" path="res://scripts/explosion.gd" id="1_nfeox"]
+
+[sub_resource type="Curve" id="Curve_17npe"]
+_data = [Vector2(0.027027018, 1), 0.0, 0.0, 0, 0, Vector2(0.954955, 0.20224726), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="Explosion" type="Node2D" unique_id=2116680564]
+z_index = 5
+script = ExtResource("1_nfeox")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="." unique_id=795060435]
+emitting = false
+amount = 10
+texture = ExtResource("1_17npe")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
+scale_amount_min = 0.05
+scale_amount_max = 0.07
+scale_amount_curve = SubResource("Curve_17npe")
+
+[connection signal="finished" from="CPUParticles2D" to="." method="_on_cpu_particles_2d_finished"]
